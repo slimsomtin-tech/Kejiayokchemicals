@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Kejiayok Chemicals</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#D4AF37;--navy:#0F1B2E;--cream:#F5F3EE;--text:#1A1A1A;--success:#16a34a}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--cream);color:var(--text);line-height:1.6;min-height:100vh}
+.app-header{background:linear-gradient(180deg,var(--navy) 0%,#1E3A5F 100%);color:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:1000}
+.brand-icon{width:48px;height:40px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--navy)}
+.app-title{font-size:18px;font-weight:800;letter-spacing:2px;color:var(--gold)}
+.app-subtitle{font-size:10px;opacity:0.8;text-transform:uppercase}
+.action-bar{background:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:64px;z-index:999;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.phone-compact{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy);text-decoration:none}
+.btn-compact{padding:8px 14px;border:2px solid var(--gold);background:transparent;color:var(--navy);font-size:12px;font-weight:700;border-radius:6px;cursor:pointer}
+.btn-cart-sm{width:40px;height:40px;border:2px solid var(--gold);background:transparent;border-radius:6px;font-size:18px;cursor:pointer;position:relative}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--gold);color:var(--navy);min-width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid #fff}
+.hero-compact{background:linear-gradient(180deg,var(--navy) 0%,#1E3A5F 100%);color:#fff;padding:20px 16px;text-align:center}
+.hero-title{font-size:16px;font-weight:700;margin-bottom:6px}
+.hero-sub{font-size:11px;opacity:0.9;margin-bottom:16px}
+.stats-compact{display:flex;justify-content:center;border-top:1px solid rgba(212,175,55,0.3);padding-top:16px}
+.stat-item{text-align:center;padding:0 20px;position:relative}
+.stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);height:24px;width:1px;background:rgba(212,175,55,0.3)}
+.stat-number{font-size:20px;font-weight:800;color:var(--gold);display:block}
+.stat-label{font-size:8px;text-transform:uppercase;opacity:0.9}
+.order-mode-toggle{display:flex;background:#e8e4db;padding:4px;border-radius:10px;margin:12px 16px;gap:4px}
+.mode-btn{flex:1;padding:12px;border:none;background:transparent;font-size:12px;font-weight:700;color:var(--text-light);border-radius:8px;cursor:pointer}
+.mode-btn.active{background:var(--navy);color:#fff}
+.catalog-section,.notepad-section-main{display:none}
+.catalog-section.active,.notepad-section-main.active{display:block}
+.search-compact{padding:12px 16px;background:#fff}
+.search-box-sm{position:relative}
+.search-input-sm{width:100%;padding:12px 12px 12px 40px;border:2px solid #e8e4db;border-radius:8px;font-size:14px;background:var(--cream)}
+.search-icon-sm{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:0.5}
+.categories-compact{padding:10px 16px;background:#fff;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.categories-compact::-webkit-scrollbar{display:none}
+.cat-pill{padding:10px 20px;background:var(--cream);border:1px solid #e0e0e0;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.cat-pill.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.products-compact{padding:12px 16px 100px}
+.section-header-sm{text-align:center;margin-bottom:16px}
+.section-label-sm{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-weight:700}
+.section-title-sm{font-size:20px;font-weight:800;color:var(--navy)}
+.product-grid-sm{display:grid;gap:12px}
+.product-card-sm{background:#fff;border-radius:12px;padding:16px;display:flex;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.product-img-sm{width:64px;height:64px;background:var(--cream);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.product-info-sm{flex:1;min-width:0}
+.product-cat-sm{font-size:9px;color:var(--gold);text-transform:uppercase;font-weight:800;letter-spacing:1px}
+.product-name-sm{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.product-size-sm{font-size:12px;color:#666;margin-bottom:12px}
+.product-row-sm{display:flex;justify-content:space-between;align-items:center}
+.product-price-sm{font-size:18px;font-weight:800;color:var(--navy)}
+.product-controls-sm{display:flex;align-items:center;gap:6px}
+.qty-btn-sm{width:32px;height:32px;border:2px solid #e0e0e0;background:#fff;border-radius:6px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--navy)}
+.qty-num-sm{width:28px;text-align:center;font-weight:800;font-size:14px}
+.add-btn-sm{padding:8px 16px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;margin-left:6px}
+.add-btn-sm.added{background:var(--gold);color:var(--navy)}
+.notepad-section{background:#fff;padding:16px;margin:12px 16px;border-radius:12px;border:2px solid var(--gold)}
+.notepad-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:2px solid #e8e4db}
+.notepad-icon{font-size:24px}
+.notepad-title{font-size:16px;font-weight:800;color:var(--navy);flex:1}
+.notepad-badge{background:var(--gold);color:var(--navy);padding:4px 12px;border-radius:20px;font-size:10px;font-weight:800}
+.notepad-textarea{width:100%;min-height:150px;padding:12px;border:2px solid #e0e0e0;border-radius:8px;font-size:15px;font-family:inherit;resize:vertical;background:#fffef0;line-height:1.6}
+.notepad-textarea:focus{outline:none;border-color:var(--gold)}
+.notepad-hint{font-size:12px;color:#666;margin-top:10px;padding:12px;background:rgba(212,175,55,0.08);border-radius:8px;border-left:3px solid var(--gold)}
+.notepad-actions{display:flex;gap:12px;margin-top:16px}
+.btn-notepad{flex:1;padding:14px;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-add-custom{background:var(--navy);color:#fff}
+.btn-clear-custom{background:var(--cream);color:var(--text);border:2px solid #e0e0e0}
+.custom-items-list{margin-top:16px}
+.custom-item{background:#f8f9fa;padding:14px;border-radius:10px;margin-bottom:10px;border-left:4px solid var(--gold);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.custom-item-text{flex:1;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.custom-item-remove{color:#dc2626;font-size:20px;cursor:pointer;padding:4px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.empty-notepad{text-align:center;padding:40px 20px;color:#666;font-size:14px}
+.about-preview-sm,.cta-compact,.contact-compact{margin:12px 16px;border-radius:12px;padding:24px 20px;text-align:center}
+.about-preview-sm{background:linear-gradient(135deg,var(--navy) 0%,#1E3A5F 100%);color:#fff}
+.about-preview-sm h3,.cta-compact h3{font-size:18px;margin-bottom:10px;color:var(--gold)}
+.about-preview-sm p,.cta-compact p{font-size:13px;opacity:0.9;margin-bottom:16px;line-height:1.6}
+.btn-about-sm,.btn-cta-sm{padding:12px 28px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:14px;font-weight:800;cursor:pointer}
+.cta-compact{background:var(--navy);color:#fff}
+.contact-compact{background:#fff;border:2px solid var(--gold)}
+.contact-compact h3{font-size:16px;color:var(--navy);margin-bottom:12px}
+.contact-compact p{font-size:13px;color:#666;line-height:1.7;margin-bottom:8px}
+.contact-phone-sm{font-size:16px;color:var(--navy);font-weight:800;margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--cream);border-radius:50px;text-decoration:none}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:10000;display:none;overflow-y:auto}
+.modal-overlay.active{display:block}
+.modal-content-sm{background:var(--cream);min-height:100%;padding-bottom:100px}
+.modal-header-sm{background:var(--navy);color:#fff;padding:16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.modal-title-sm{font-size:18px;font-weight:700}
+.btn-close-sm{width:40px;height:40px;background:rgba(255,255,255,0.1);border:2px solid var(--gold);border-radius:8px;color:#fff;font-size:20px;cursor:pointer}
+.about-content-sm{padding:20px 16px}
+.about-hero-sm{text-align:center;padding:24px 0;border-bottom:2px solid #e0e0e0;margin-bottom:20px}
+.about-icon-lg{width:72px;height:72px;background:var(--gold);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:20px;color:var(--navy);font-weight:800}
+.about-title-lg{font-size:24px;color:var(--navy);font-weight:800}
+.about-sub-lg{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:2px}
+.about-text-sm{font-size:14px;line-height:1.8;margin-bottom:20px}
+.about-block-sm{background:#fff;padding:16px;border-radius:10px;margin-bottom:12px;border-left:4px solid var(--gold)}
+.about-block-sm h4{font-size:15px;color:var(--navy);margin-bottom:8px;font-weight:800}
+.about-block-sm p{font-size:13px;color:#666;line-height:1.6}
+.values-row-sm{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.value-card-sm{background:#fff;padding:16px 12px;border-radius:10px;text-align:center;border:1px solid #e0e0e0}
+.value-icon-sm{font-size:24px;margin-bottom:6px}
+.value-title-sm{font-size:12px;font-weight:800;color:var(--navy)}
+.value-desc-sm{font-size:10px;color:#666}
+.cart-content-sm{padding:16px}
+.cart-item-sm{background:#fff;padding:16px;border-radius:12px;margin-bottom:12px;display:flex;gap:12px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.cart-img-sm{width:48px;height:48px;background:var(--cream);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.cart-info-sm{flex:1;min-width:0}
+.cart-name-sm{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.cart-meta-sm{font-size:11px;color:#666;margin-bottom:8px}
+.cart-qty-sm{display:flex;align-items:center;gap:6px}
+.cart-qty-btn-sm{width:28px;height:28px;border:1px solid #ddd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer}
+.cart-price-sm{font-weight:800;color:var(--navy);margin-left:auto;font-size:15px;padding:0 8px}
+.cart-remove-sm{color:#dc2626;font-size:12px;margin-left:8px;cursor:pointer;font-weight:700}
+.cart-custom-section{background:#f0f8ff;padding:16px;border-radius:12px;margin-bottom:12px;border:2px dashed var(--navy)}
+.cart-custom-label{font-size:11px;color:var(--navy);font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.cart-custom-text{font-size:14px;line-height:1.6;background:#fff;padding:12px;border-radius:8px;white-space:pre-wrap}
+.cart-empty-sm{text-align:center;padding:60px 20px}
+.cart-empty-icon-sm{width:80px;height:80px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 16px;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.cart-footer-sm{background:#fff;padding:20px 16px;position:sticky;bottom:0;border-top:2px solid #e8e4db;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+.cart-total-sm{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cart-total-label-sm{font-size:13px;color:#666;text-transform:uppercase;font-weight:700}
+.cart-total-amount-sm{font-size:28px;font-weight:800;color:var(--navy)}
+.btn-checkout-sm{width:100%;padding:18px;background:var(--gold);color:var(--navy);border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(212,175,55,0.4)}
+.checkout-form-sm{padding:16px}
+.form-group-sm{margin-bottom:16px}
+.form-group-sm label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.form-group-sm input,.form-group-sm textarea{width:100%;padding:14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;font-family:inherit}
+.form-group-sm input:focus,.form-group-sm textarea:focus{outline:none;border-color:var(--gold)}
+.summary-box-sm{background:#fff;padding:20px;border-radius:12px;margin-bottom:20px;border:2px solid #e8e4db}
+.summary-title-sm{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:16px;text-transform:uppercase}
+.summary-item-sm{display:flex;justify-content:space-between;font-size:13px;margin-bottom:10px;color:#666}
+.summary-custom{background:#f8f9fa;padding:14px;border-radius:10px;margin:14px 0;border-left:4px solid var(--gold)}
+.summary-custom-label{font-size:11px;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.summary-custom-text{font-size:13px;line-height:1.6;white-space:pre-wrap}
+.summary-total-sm{display:flex;justify-content:space-between;font-size:18px;font-weight:800;color:var(--navy);margin-top:16px;padding-top:16px;border-top:3px solid var(--gold)}
+.radio-group-sm{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.radio-item-sm{display:flex;align-items:flex-start;gap:12px;padding:16px;background:#fff;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer}
+.radio-item-sm.selected{border-color:var(--gold);background:#fff8e1}
+.radio-item-sm input{width:20px;height:20px;accent-color:var(--gold);flex-shrink:0;margin-top:2px}
+.radio-text-sm{flex:1}
+.radio-title-sm{font-size:15px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px}
+.radio-sub-sm{font-size:12px;color:#666}
+#pickupBox{background:#fff8e1;padding:16px;border-radius:10px;border:2px solid var(--gold);margin-top:12px}
+#pickupBox div:first-child{font-size:12px;font-weight:800;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+#pickupBox div:nth-child(2){font-size:15px;color:var(--navy);font-weight:700}
+#pickupBox div:nth-child(3){font-size:12px;color:#666;margin-top:4px}
+.call-list-sm{padding:16px}
+.call-card-sm{display:flex;align-items:center;gap:16px;padding:18px;background:#fff;border-radius:12px;margin-bottom:12px;text-decoration:none;color:inherit;border:1px solid #e0e0e0}
+.call-icon-sm{width:56px;height:56px;background:var(--navy);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0}
+.call-info-sm{flex:1}
+.call-label-sm{font-size:10px;color:var(--gold);text-transform:uppercase;font-weight:800}
+.call-number-sm{font-size:18px;font-weight:800;color:var(--navy);margin:4px 0}
+.call-desc-sm{font-size:12px;color:#666}
+.call-badge-sm{background:var(--gold);color:var(--navy);padding:8px 16px;border-radius:20px;font-size:11px;font-weight:800}
+.location-box-sm{background:#fff;padding:24px;border-radius:12px;margin:16px;text-align:center;border:3px solid var(--gold)}
+.location-label-sm{font-size:12px;color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.location-text-sm{font-size:15px;color:var(--navy);font-weight:700;line-height:1.6}
+.bottom-nav-sm{position:fixed;bottom:0;left:0;width:100%;background:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #e0e0e0;display:flex;justify-content:space-around;z-index:9999;box-shadow:0 -4px 20px rgba(0,0,0,0.08)}
+.nav-btn-sm{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:#666;font-size:10px;font-weight:700;padding:10px 16px;cursor:pointer;text-decoration:none}
+.nav-btn-sm.active{color:var(--navy);background:rgba(212,175,55,0.1);border-radius:12px}
+.nav-icon-sm{font-size:24px}
+.toast-sm{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-200%);background:var(--navy);color:#fff;padding:14px 28px;border-radius:50px;font-size:14px;font-weight:700;z-index:20000;transition:all 0.3s;opacity:0;border:2px solid var(--gold);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.toast-sm.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* DUAL SEND MODAL STYLES */
+.dual-send-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:30000;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;overflow-y:auto}
+.dual-send-modal.active{display:flex}
+.dual-send-content{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:480px;margin-top:20px;border:4px solid var(--gold)}
+.dual-send-header{text-align:center;margin-bottom:24px}
+.dual-send-icon{width:64px;height:64px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px}
+.dual-send-title{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.dual-send-subtitle{font-size:14px;color:#666}
+.send-step{background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:16px;border:2px solid #e0e0e0;position:relative}
+.send-step.active{border-color:var(--gold);background:#fff8e1}
+.send-step.completed{border-color:var(--success);background:#f0fdf4}
+.send-step-number{position:absolute;top:-12px;left:16px;background:var(--navy);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+.send-step.completed .send-step-number{background:var(--success)}
+.send-step-title{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:8px;padding-left:20px}
+.send-step-desc{font-size:13px;color:#666;margin-bottom:16px;padding-left:20px;line-height:1.5}
+.whatsapp-btn{width:100%;padding:16px;background:#25D366;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;text-decoration:none}
+.whatsapp-btn:disabled{background:#ccc;cursor:not-allowed}
+.whatsapp-btn.sent{background:var(--success)}
+.done-btn{width:100%;padding:18px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;margin-top:16px}
+
+.success-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:35000;display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.success-modal.active{display:flex}
+.success-content{background:#fff;border-radius:24px;padding:32px 24px;width:100%;max-width:440px;text-align:center;border:4px solid var(--gold);box-shadow:0 24px 60px rgba(0,0,0,0.4)}
+.success-icon{width:80px;height:80px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 20px;box-shadow:0 8px 24px rgba(212,175,55,0.4)}
+.success-title{font-size:24px;font-weight:800;color:var(--navy);margin-bottom:12px}
+.success-message{font-size:14px;color:#666;line-height:1.7;margin-bottom:24px}
+.success-details{background:var(--cream);padding:20px;border-radius:12px;margin-bottom:24px;text-align:left;border:2px solid rgba(212,175,55,0.3)}
+.success-detail-row{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px}
+.success-detail-row:last-child{margin-bottom:0;padding-top:12px;border-top:2px solid var(--gold);font-weight:800;color:var(--navy);font-size:16px}
+.bank-details-box{background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%);padding:24px;border-radius:16px;margin:24px 0;border:3px solid var(--gold);text-align:left}
+.bank-details-title{font-size:14px;color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;text-align:center}
+.bank-detail-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:14px;flex-wrap:wrap;gap:8px}
+.bank-label{color:#666;font-weight:700}
+.bank-value{color:var(--navy);font-weight:800;text-align:right;flex:1;display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.copy-btn{background:var(--gold);color:var(--navy);border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:800;cursor:pointer}
+.btn-success{width:100%;padding:18px;background:var(--navy);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer;margin-top:16px;box-shadow:0 8px 24px rgba(15,27,46,0.3)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="toast-sm" id="toast">Added to cart</div>
+
+<!-- DUAL SEND MODAL - Step by Step -->
+<div class="dual-send-modal" id="dualSendModal">
+    <div class="dual-send-content">
+        <div class="dual-send-header">
+            <div class="dual-send-icon">📱</div>
+            <div class="dual-send-title">Send Order to BOTH Numbers</div>
+            <div class="dual-send-subtitle">Complete both steps to ensure fast response</div>
+        </div>
+        
+        <!-- Step 1: Primary Number -->
+        <div class="send-step active" id="step1">
+            <div class="send-step-number">1</div>
+            <div class="send-step-title">Send to Primary Number</div>
+            <div class="send-step-desc">0705 832 7844<br>Main line - Available 24/7</div>
+            <button class="whatsapp-btn" id="btn1" onclick="sendToPrimary()">
+                <span>📱</span> Open WhatsApp & Send
+            </button>
+            <div style="font-size:12px;color:#666;text-align:center;margin-top:8px">
+                After sending, return here and click "I've Sent Step 1"
+            </div>
+            <button class="whatsapp-btn" style="background:var(--navy);margin-top:8px" id="confirm1" onclick="confirmStep1()" disabled>
+                ✓ I've Sent Step 1
+            </button>
+        </div>
+        
+        <!-- Step 2: Secondary Number -->
+        <div class="send-step" id="step2">
+            <div class="send-step-number">2</div>
+            <div class="send-step-title">Send to Secondary Number</div>
+            <div class="send-step-desc">0813 838 5895<br>Backup line - For fast response</div>
+            <button class="whatsapp-btn" id="btn2" onclick="sendToSecondary()" disabled>
+                <span>📱</span> Open WhatsApp & Send
+            </button>
+            <div style="font-size:12px;color:#666;text-align:center;margin-top:8px">
+                After sending, click "I've Sent Step 2"
+            </div>
+            <button class="whatsapp-btn" style="background:var(--navy);margin-top:8px" id="confirm2" onclick="confirmStep2()" disabled>
+                ✓ I've Sent Step 2
+            </button>
+        </div>
+        
+        <button class="done-btn" id="finishBtn" onclick="finishOrder()" disabled>
+            Complete Order ✓
+        </button>
+        
+        <div style="font-size:12px;color:#666;text-align:center;margin-top:16px;line-height:1.5">
+            💡 <strong>Why both numbers?</strong><br>
+            Sending to both ensures the fastest response.<br>Whoever is available first will process your order!
+        </div>
+    </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-modal" id="successModal">
+    <div class="success-content">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Order Completed!</div>
+        <div class="success-message">Your order has been sent to BOTH team members. The first available will process it immediately.</div>
+        <div class="success-details">
+            <div class="success-detail-row"><span>Order ID:</span><span id="successOrderId">#KJA-001</span></div>
+            <div class="success-detail-row"><span>Catalog Total:</span><span id="successCatalogTotal">₦0</span></div>
+            <div class="success-detail-row"><span>Custom Items:</span><span id="successCustomCount">0</span></div>
+            <div class="success-detail-row"><span>Total:</span><span id="successTotal">₦0</span></div>
+        </div>
+        <div class="bank-details-box">
+            <div class="bank-details-title">🏦 Bank Transfer Details</div>
+            <div class="bank-detail-row"><span class="bank-label">Bank:</span><span class="bank-value">Moniepoint</span></div>
+            <div class="bank-detail-row"><span class="bank-label">Account:</span><span class="bank-value">5827838262 <button class="copy-btn" onclick="copyAccount()">COPY</button></span></div>
+            <div class="bank-detail-row"><span class="bank-label">Name:</span><span class="bank-value" style="font-size:12px">Kejiayok Chemicals & Multiservice Ltd</span></div>
+        </div>
+        <p style="font-size:13px;color:#666;margin-bottom:16px">✅ Sent to BOTH WhatsApp numbers!<br>Check your WhatsApp for confirmation.</p>
+        <button class="btn-success" onclick="closeSuccess()">Done</button>
+    </div>
+</div>
+
+<header class="app-header">
+<div class="brand-icon">KJA</div>
+<div>
+<div class="app-title">KEJIAYOK</div>
+<div class="app-subtitle">Chemicals & Multiservice Ltd</div>
+</div>
+</header>
+
+<div class="action-bar">
+<a href="tel:+2347058327844" class="phone-compact"><div class="phone-icon">📞</div><span>0705 832 7844</span></a>
+<div style="display:flex;gap:8px">
+<button class="btn-compact" onclick="openAbout()">About</button>
+<button class="btn-cart-sm" onclick="openCart()">🛒<span class="cart-badge" id="cartBadge">0</span></button>
+</div>
+</div>
+
+<div class="hero-compact">
+<h1 class="hero-title">Quality Chemicals for Global Standards</h1>
+<p class="hero-sub">Premium industrial and household chemical solutions</p>
+<div class="stats-compact">
+<div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Products</span></div>
+<div class="stat-item"><span class="stat-number">24h</span><span class="stat-label">Delivery</span></div>
+<div class="stat-item"><span class="stat-number">ISO</span><span class="stat-label">Certified</span></div>
+</div>
+</div>
+
+<div class="order-mode-toggle">
+<button class="mode-btn active" onclick="switchMode('catalog',this)">📋 Browse</button>
+<button class="mode-btn" onclick="switchMode('notepad',this)">📝 Write Order</button>
+</div>
+
+<div class="catalog-section active" id="catalogSection">
+<div class="search-compact"><div class="search-box-sm"><span class="search-icon-sm">🔍</span><input type="text" class="search-input-sm" placeholder="Search chemicals..." id="searchInput" onkeyup="doSearch()"></div></div>
+<div class="categories-compact">
+<button class="cat-pill active" onclick="filterCat('all',this)">All</button>
+<button class="cat-pill" onclick="filterCat('soap',this)">Liquid Soap</button>
+<button class="cat-pill" onclick="filterCat('disinfectant',this)">Disinfectants</button>
+<button class="cat-pill" onclick="filterCat('cleaning',this)">Cleaning</button>
+</div>
+<div class="products-compact">
+<div class="section-header-sm"><div class="section-label-sm">Our Catalog</div><h2 class="section-title-sm">Premium Solutions</h2></div>
+<div class="product-grid-sm" id="productList"></div>
+</div>
+</div>
+
+<div class="notepad-section-main" id="notepadSection">
+<div class="notepad-section">
+<div class="notepad-header"><span class="notepad-icon">📝</span><span class="notepad-title">Write Your Order</span><span class="notepad-badge">CUSTOM</span></div>
+<textarea class="notepad-textarea" id="customOrderInput" placeholder="Type your order here...&#10;&#10;Example:&#10;• 20 Litres Liquid Soap&#10;• 10 Litres Bleach&#10;• 5 Litres Izal"></textarea>
+<div class="notepad-hint">💡 <strong>Tip:</strong> Be specific with quantities and product names</div>
+<div class="notepad-actions">
+<button class="btn-notepad btn-add-custom" onclick="addCustomOrder()">➕ Add to Cart</button>
+<button class="btn-notepad btn-clear-custom" onclick="clearNotepad()">🗑️ Clear</button>
+</div>
+<div class="custom-items-list" id="customItemsList"><div class="empty-notepad"><div class="notepad-icon">📝</div><div>Your custom orders appear here</div></div></div>
+</div>
+</div>
+
+<div class="about-preview-sm"><h3>About Kejiayok</h3><p>High-quality chemical products for industrial and domestic needs. Based in Osogbo, Nigeria.</p><button class="btn-about-sm" onclick="openAbout()">Learn More</button></div>
+<div class="cta-compact"><h3>Need Custom Orders?</h3><p>Our team can source any chemical product globally.</p><button class="btn-cta-sm" onclick="switchMode('notepad',document.querySelectorAll('.mode-btn')[1])">Write Order</button></div>
+<div class="contact-compact"><h3>📍 Visit Our Office</h3><p>No. 6 Afonta Street, Behind Spices Eatery<br>Oke-Fia, Osogbo, Nigeria</p><a href="tel:+2347058327844" class="contact-phone-sm">📞 0705 832 7844</a><p style="font-size:10px;margin-top:12px;color:#999">Prices valid until March 31, 2026</p></div>
+
+<div class="modal-overlay" id="aboutModal" onclick="closeAbout(event)"><div class="modal-content-sm" onclick="event.stopPropagation()"><div class="modal-header-sm"><span class="modal-title-sm">About Us</span><button class="btn-close-sm" onclick="closeAbout()">✕</button></div><div class="about-content-sm"><div class="about-hero-sm"><div class="about-icon-lg">KJA</div><div class="about-title-lg">KEJIAYOK</div><div class="about-sub-lg">Chemicals & Multiservice Ltd</div></div><p class="about-text-sm">At Kejiayok Chemicals, we deliver high-quality chemical products for industrial and domestic needs. Based in Osogbo, Nigeria.</p><div class="about-block-sm"><h4>🎯 Our Expertise</h4><p>Caustic soda, paraffin wax, paraffin oil, sulfuric acid, and specialized formulations.</p></div><div class="about-block-sm"><h4>💎 Core Values</h4><div class="values-row-sm"><div class="value-card-sm"><div class="value-icon-sm">🏆</div><div class="value-title-sm">Excellence</div></div><div class="value-card-sm"><div class="value-icon-sm">🛡️</div><div class="value-title-sm">Safety</div></div><div class="value-card-sm"><div class="value-icon-sm">🤝</div><div class="value-title-sm">Partnership</div></div><div class="value-card-sm"><div class="value-icon-sm">⚡</div><div class="value-title-sm">Innovation</div></div></div></div></div></div></div>
+
+<div class="modal-overlay" id="cartModal" onclick="closeCart(event)"><div class="modal-content-sm" onclick="event.stopPropagation()"><div class="modal-header-sm"><span class="modal-title-sm">Your Cart</span><button class="btn-close-sm" onclick="closeCart()">✕</button></div><div class="cart-content-sm" id="cartContent"><div class="cart-empty-sm"><div class="cart-empty-icon-sm">🛒</div><div style="font-weight:800;color:var(--navy);margin-bottom:8px">Your cart is empty</div><p style="font-size:14px;color:#666">Add products or write custom order</p></div></div><div class="cart-footer-sm" id="cartFooter" style="display:none"><div class="cart-total-sm"><span class="cart-total-label-sm">Total</span><span class="cart-total-amount-sm" id="cartTotal">₦0</span></div><button class="btn-checkout-sm" onclick="openCheckout()">Request Quote →</button></div></div></div>
+
+<div class="modal-overlay" id="checkoutModal" onclick="closeCheckout(event)"><div class="modal-content-sm" onclick="event.stopPropagation()"><div class="modal-header-sm"><span class="modal-title-sm">Request Quote</span><button class="btn-close-sm" onclick="closeCheckout()">✕</button></div><div class="checkout-form-sm"><div class="summary-box-sm"><div class="summary-title-sm">Order Summary</div><div id="summaryItems"></div><div id="summaryCustom"></div><div class="summary-total-sm"><span>Total</span><span id="summaryTotal">₦0</span></div></div><div class="form-group-sm"><label>Full Name *</label><input type="text" id="custName" placeholder="Your name"></div><div class="form-group-sm"><label>Phone *</label><input type="tel" id="custPhone" placeholder="0705 832 7844"></div><div class="form-group-sm"><label>Email</label><input type="email" id="custEmail" placeholder="your@email.com"></div><div style="margin-bottom:16px"><label style="display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">Business Type</label><div class="radio-group-sm"><label class="radio-item-sm selected" onclick="selectRadio(this)"><input type="radio" name="biz" value="personal" checked><div class="radio-text-sm"><span class="radio-title-sm">Personal</span><span class="radio-sub-sm">Home use</span></div></label><label class="radio-item-sm" onclick="selectRadio(this)"><input type="radio" name="biz" value="commercial"><div class="radio-text-sm"><span class="radio-title-sm">Commercial</span><span class="radio-sub-sm">Business use</span></div></label></div></div><div style="margin-bottom:16px"><label style="display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">Delivery</label><div class="radio-group-sm"><label class="radio-item-sm selected" onclick="selectDel(this,'delivery')"><input type="radio" name="del" value="delivery" checked><div class="radio-text-sm"><span class="radio-title-sm">🚚 Delivery</span></div></label><label class="radio-item-sm" onclick="selectDel(this,'pickup')"><input type="radio" name="del" value="pickup"><div class="radio-text-sm"><span class="radio-title-sm">🏢 Pickup</span></div></label></div><div id="addressBox"><div class="form-group-sm" style="margin-top:12px"><label>Address *</label><textarea id="custAddress" rows="2" placeholder="Full address..."></textarea></div></div><div id="pickupBox" style="display:none"><div>📍 PICKUP LOCATION</div><div>No. 6 Afonta Street, Oke-Fia, Osogbo</div><div>Mon-Sat, 8AM - 6PM</div></div></div><div class="form-group-sm"><label>Notes</label><input type="text" id="custNotes" placeholder="Special requirements..."></div><button class="btn-checkout-sm" onclick="startDualSend()">📱 Send to BOTH WhatsApp Numbers</button></div></div></div>
+
+<div class="modal-overlay" id="callModal" onclick="closeCall(event)"><div class="modal-content-sm" onclick="event.stopPropagation()"><div class="modal-header-sm"><span class="modal-title-sm">Contact Us</span><button class="btn-close-sm" onclick="closeCall()">✕</button></div><div class="call-list-sm"><a href="tel:+2347058327844" class="call-card-sm"><div class="call-icon-sm">📱</div><div class="call-info-sm"><div class="call-label-sm">Primary</div><div class="call-number-sm">0705 832 7844</div><div class="call-desc-sm">24/7 Available</div></div><span class="call-badge-sm">CALL</span></a><a href="tel:+2349028243644" class="call-card-sm"><div class="call-icon-sm" style="background:#2563eb">💼</div><div class="call-info-sm"><div class="call-label-sm">Secondary</div><div class="call-number-sm">0902 824 3644</div><div class="call-desc-sm">Sales 8AM-6PM</div></div><span class="call-badge-sm" style="background:#dbeafe;color:#2563eb">CALL</span></a></div><div class="location-box-sm"><div class="location-label-sm">📍 Visit Us</div><div class="location-text-sm">No. 6 Afonta Street, Behind Spices Eatery<br>Oke-Fia, Osogbo, Nigeria</div></div></div></div>
+
+<nav class="bottom-nav-sm">
+<button class="nav-btn-sm active" onclick="goHome()"><span class="nav-icon-sm">🏠</span><span>Home</span></button>
+<button class="nav-btn-sm" onclick="openCart()"><span class="nav-icon-sm">🛒</span><span>Cart</span></button>
+<button class="nav-btn-sm" onclick="openCall()"><span class="nav-icon-sm">📞</span><span>Call</span></button>
+<a href="https://wa.me/2347058327844" class="nav-btn-sm"><span class="nav-icon-sm">💬</span><span>Chat</span></a>
+</nav>
+
+<script>
+const products=[{id:1,name:"Liquid Soap - Retail A",cat:"soap",size:"10L",price:6000,emoji:"🧴"},{id:2,name:"Liquid Soap - Retail B",cat:"soap",size:"10L",price:7350,emoji:"🧴"},{id:3,name:"Liquid Soap - Standard",cat:"soap",size:"20L",price:10000,emoji:"🧴"},{id:4,name:"Liquid Soap - Premium",cat:"soap",size:"20L",price:12350,emoji:"🧴"},{id:5,name:"Liquid Soap - Basic",cat:"soap",size:"25L",price:13100,emoji:"🧴"},{id:6,name:"Liquid Soap - Mid",cat:"soap",size:"25L",price:17200,emoji:"🧴"},{id:7,name:"Liquid Soap - Premium+",cat:"soap",size:"25L",price:20950,emoji:"🧴"},{id:8,name:"Izal Disinfectant",cat:"disinfectant",size:"10L",price:12650,emoji:"🧪"},{id:9,name:"Antiseptic Liquid",cat:"disinfectant",size:"3L",price:11200,emoji:"💊"},{id:10,name:"Air Freshener",cat:"cleaning",size:"5L",price:9250,emoji:"🌸"},{id:11,name:"Toilet Wash",cat:"cleaning",size:"5L",price:9400,emoji:"🚽"},{id:12,name:"Bleach",cat:"cleaning",size:"10L",price:3500,emoji:"⚗️"}];
+const WHATSAPP_NUMBERS={primary:'2347058327844',secondary:'2348138385895'};
+const BANK_DETAILS={bankName:'Moniepoint',accountNumber:'5827838262',accountName:'Kejiayok Chemicals & Multiservice Limited'};
+let cart={},currentCat='all',customOrders=[],currentOrderId='',companyMessage='',customerMessage='';
+
+function render(){const list=document.getElementById('productList');const search=document.getElementById('searchInput').value.toLowerCase();list.innerHTML='';const filtered=products.filter(p=>{const matchCat=currentCat==='all'||p.cat===currentCat;const matchSearch=!search||p.name.toLowerCase().includes(search);return matchCat&&matchSearch});filtered.forEach(p=>{const card=document.createElement('div');card.className='product-card-sm';card.innerHTML=`<div class="product-img-sm">${p.emoji}</div><div class="product-info-sm"><div class="product-cat-sm">${p.cat}</div><div class="product-name-sm">${p.name}</div><div class="product-size-sm">📦 ${p.size}</div><div class="product-row-sm"><span class="product-price-sm">₦${p.price.toLocaleString()}</span><div class="product-controls-sm"><button class="qty-btn-sm" onclick="changeQty(${p.id},-1)">-</button><span class="qty-num-sm" id="qty-${p.id}">1</span><button class="qty-btn-sm" onclick="changeQty(${p.id},1)">+</button><button class="add-btn-sm" id="btn-${p.id}" onclick="addCart(${p.id})">Add</button></div></div></div></div>`;list.appendChild(card)})}
+function changeQty(id,d){const el=document.getElementById(`qty-${id}`);let v=parseInt(el.textContent)+d;if(v<1)v=1;if(v>99)v=99;el.textContent=v}
+function addCart(id){const qty=parseInt(document.getElementById(`qty-${id}`).textContent);const p=products.find(x=>x.id===id);if(cart[id])cart[id].qty+=qty;else cart[id]={...p,qty};document.getElementById(`qty-${id}`).textContent='1';const btn=document.getElementById(`btn-${id}`);btn.textContent='✓';btn.classList.add('added');setTimeout(()=>{btn.textContent='Add';btn.classList.remove('added')},1200);updateCart();showToast('Added to cart')}
+function switchMode(mode,btn){document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(mode==='catalog'){document.getElementById('catalogSection').classList.add('active');document.getElementById('notepadSection').classList.remove('active')}else{document.getElementById('catalogSection').classList.remove('active');document.getElementById('notepadSection').classList.add('active')}}
+function addCustomOrder(){const input=document.getElementById('customOrderInput');const text=input.value.trim();if(!text){showToast('Please write your order first');return}const customItem={id:'custom_'+Date.now(),text:text,timestamp:new Date().toLocaleString()};customOrders.push(customItem);input.value='';renderCustomItems();updateCart();showToast('Custom order added')}
+function renderCustomItems(){const container=document.getElementById('customItemsList');if(customOrders.length===0){container.innerHTML='<div class="empty-notepad"><div class="notepad-icon">📝</div><div>Your custom orders appear here</div></div>';return}container.innerHTML=customOrders.map(item=>`<div class="custom-item"><div class="custom-item-text">${item.text.replace(/</g,'&lt;')}</div><button class="custom-item-remove" onclick="removeCustomItem('${item.id}')">✕</button></div>`).join('')}
+function removeCustomItem(id){customOrders=customOrders.filter(item=>item.id!==id);renderCustomItems();updateCart()}
+function clearNotepad(){const input=document.getElementById('customOrderInput');if(input.value.trim()&&confirm('Clear your current order text?'))input.value=''}
+function updateCart(){const items=Object.values(cart);const count=items.reduce((s,i)=>s+i.qty,0)+customOrders.length;const total=items.reduce((s,i)=>s+(i.price*i.qty),0);document.getElementById('cartBadge').textContent=count;document.getElementById('cartBadge').style.display=count>0?'flex':'none';document.getElementById('cartTotal').textContent='₦'+total.toLocaleString();const content=document.getElementById('cartContent');const footer=document.getElementById('cartFooter');if(items.length===0&&customOrders.length===0){content.innerHTML='<div class="cart-empty-sm"><div class="cart-empty-icon-sm">🛒</div><div style="font-weight:800;color:var(--navy);margin-bottom:8px">Your cart is empty</div><p style="font-size:14px;color:#666">Add products or write custom order</p></div>';footer.style.display='none'}else{let html='';if(items.length>0){html+=items.map(i=>`<div class="cart-item-sm"><div class="cart-img-sm">${i.emoji}</div><div class="cart-info-sm"><div class="cart-name-sm">${i.name}</div><div class="cart-meta-sm">${i.size}</div><div class="cart-qty-sm"><button class="cart-qty-btn-sm" onclick="updateQty(${i.id},-1)">-</button><span>${i.qty}</span><button class="cart-qty-btn-sm" onclick="updateQty(${i.id},1)">+</button></div></div><span class="cart-price-sm">₦${(i.price*i.qty).toLocaleString()}</span><button class="cart-remove-sm" onclick="removeItem(${i.id})">✕</button></div>`).join('')}if(customOrders.length>0){html+=customOrders.map(item=>`<div class="cart-custom-section"><div class="cart-custom-label">📝 CUSTOM ORDER</div><div class="cart-custom-text">${item.text.replace(/</g,'&lt;')}</div><button class="cart-remove-sm" onclick="removeCustomItem('${item.id}')" style="display:inline-block;margin-top:12px">Remove ✕</button></div>`).join('')}content.innerHTML=html;footer.style.display='block'}}
+function updateQty(id,d){if(!cart[id])return;cart[id].qty+=d;if(cart[id].qty<=0)delete cart[id];updateCart()}
+function removeItem(id){if(confirm('Remove this item?')){delete cart[id];updateCart();showToast('Item removed')}}
+function doSearch(){render()}
+function filterCat(cat,btn){currentCat=cat;document.querySelectorAll('.cat-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
+function openAbout(){document.getElementById('aboutModal').classList.add('active');document.body.style.overflow='hidden'}
+function closeAbout(e){if(!e||e.target.id==='aboutModal'){document.getElementById('aboutModal').classList.remove('active');document.body.style.overflow=''}}
+function openCart(){updateCart();document.getElementById('cartModal').classList.add('active');document.body.style.overflow='hidden';document.querySelectorAll('.nav-btn-sm').forEach((b,i)=>b.classList.toggle('active',i===1))}
+function closeCart(e){if(!e||e.target.id==='cartModal'){document.getElementById('cartModal').classList.remove('active');document.body.style.overflow='';document.querySelectorAll('.nav-btn-sm').forEach((b,i)=>b.classList.toggle('active',i===0))}}
+function openCheckout(){closeCart();const items=Object.values(cart);const total=items.reduce((s,i)=>s+(i.price*i.qty),0);document.getElementById('summaryItems').innerHTML=items.length>0?items.map(i=>`<div class="summary-item-sm"><span>${i.qty}x ${i.name}</span><span>₦${(i.price*i.qty).toLocaleString()}</span></div>`).join(''):'<div style="color:#999;font-size:14px;margin-bottom:12px">No catalog items</div>';document.getElementById('summaryCustom').innerHTML=customOrders.length>0?`<div class="summary-custom"><div class="summary-custom-label">📝 CUSTOM ORDERS</div><div class="summary-custom-text">${customOrders.map(o=>o.text.replace(/</g,'&lt;')).join('<br><br>')}</div></div>`:'';document.getElementById('summaryTotal').textContent='₦'+total.toLocaleString();document.getElementById('checkoutModal').classList.add('active')}
+function closeCheckout(e){if(!e||e.target.id==='checkoutModal'){document.getElementById('checkoutModal').classList.remove('active');document.body.style.overflow=''}}
+function openCall(){document.getElementById('callModal').classList.add('active');document.body.style.overflow='hidden';document.querySelectorAll('.nav-btn-sm').forEach((b,i)=>b.classList.toggle('active',i===2))}
+function closeCall(e){if(!e||e.target.id==='callModal'){document.getElementById('callModal').classList.remove('active');document.body.style.overflow='';document.querySelectorAll('.nav-btn-sm').forEach((b,i)=>b.classList.toggle('active',i===0))}}
+function selectRadio(el){el.parentElement.querySelectorAll('.radio-item-sm').forEach(r=>r.classList.remove('selected'));el.classList.add('selected');el.querySelector('input').checked=true}
+function selectDel(el,type){el.parentElement.querySelectorAll('.radio-item-sm').forEach(r=>r.classList.remove('selected'));el.classList.add('selected');el.querySelector('input').checked=true;document.getElementById('addressBox').style.display=type==='pickup'?'none':'block';document.getElementById('pickupBox').style.display=type==='pickup'?'block':'none'}
+function generateOrderId(){return'KJA-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).substring(2,5).toUpperCase()}
+function copyAccount(){navigator.clipboard.writeText(BANK_DETAILS.accountNumber).then(()=>showToast('Account number copied!')).catch(()=>showToast('Account: '+BANK_DETAILS.accountNumber))}
+function closeSuccess(){document.getElementById('successModal').classList.remove('active');document.body.style.overflow='';cart={};customOrders=[];updateCart();renderCustomItems();document.querySelectorAll('input,textarea').forEach(el=>el.value='');goHome()}
+function showSuccessModal(orderId,catalogTotal,catalogCount,customCount){document.getElementById('successOrderId').textContent=orderId;document.getElementById('successCatalogTotal').textContent='₦'+catalogTotal.toLocaleString();document.getElementById('successCustomCount').textContent=customCount;document.getElementById('successTotal').textContent=catalogTotal>0?'₦'+catalogTotal.toLocaleString():'Awaiting quote';document.getElementById('successModal').classList.add('active');document.body.style.overflow='hidden'}
+
+// NEW DUAL SEND SYSTEM
+function startDualSend(){
+    const name=document.getElementById('custName').value.trim();
+    const phone=document.getElementById('custPhone').value.trim();
+    const email=document.getElementById('custEmail').value.trim();
+    const address=document.getElementById('custAddress').value.trim();
+    const notes=document.getElementById('custNotes').value.trim();
+    const del=document.querySelector('input[name="del"]:checked').value;
+    const biz=document.querySelector('input[name="biz"]:checked').value;
+    
+    if(!name||!phone){showToast('Please fill name and phone');return}
+    if(del==='delivery'&&!address){showToast('Please enter address');return}
+    
+    const items=Object.values(cart);
+    const catalogTotal=items.reduce((s,i)=>s+(i.price*i.qty),0);
+    currentOrderId=generateOrderId();
+    
+    // Build company message
+    companyMessage=`*🚨 NEW ORDER - ${currentOrderId} 🚨*%0A%0A*👤 CLIENT*%0AName: ${name}%0APhone: ${phone}%0A${email?'Email: '+email+'%0A':''}Type: ${biz.toUpperCase()}%0A%0A*🚚 DELIVERY*%0AMethod: ${del==='delivery'?'Delivery':'Pickup'}%0A${del==='delivery'?'Address: '+address:'Location: No.6 Afonta St, Oke-Fia, Osogbo'}%0A%0A`;
+    
+    if(items.length>0){
+        companyMessage+=`*📦 CATALOG ITEMS*%0A`;
+        items.forEach(i=>{companyMessage+=`• ${i.qty}x ${i.name} (${i.size})%0A  ₦${i.price.toLocaleString()} = ₦${(i.price*i.qty).toLocaleString()}%0A`});
+        companyMessage+=`%0A*💰 TOTAL: ₦${catalogTotal.toLocaleString()}*%0A%0A`;
+    }
+    
+    if(customOrders.length>0){
+        companyMessage+=`*📝 CUSTOM ORDERS*%0A`;
+        customOrders.forEach((o,idx)=>{companyMessage+=`${idx+1}. ${o.text.replace(/\n/g,'%0A')}%0A%0A`});
+        companyMessage+=`*⏳ Price on request*%0A%0A`;
+    }
+    
+    if(notes)companyMessage+=`*📝 Notes:* ${notes}%0A%0A`;
+    companyMessage+=`*🆔 Order ID: ${currentOrderId}*%0A📅 ${new Date().toLocaleString()}%0A%0A_Kejiayok Chemicals_`;
+    
+    // Build customer message
+    customerMessage=`*✅ ORDER CONFIRMED - ${currentOrderId}*%0A%0ADear ${name},%0A%0AThank you for your order!%0A%0A*📋 DETAILS*%0AOrder ID: ${currentOrderId}%0ADate: ${new Date().toLocaleDateString()}%0A%0A`;
+    
+    if(items.length>0){
+        customerMessage+=`*📦 ITEMS*%0A`;
+        items.forEach(i=>{customerMessage+=`• ${i.qty}x ${i.name}%0A  ₦${(i.price*i.qty).toLocaleString()}%0A`});
+        customerMessage+=`%0A*Subtotal: ₦${catalogTotal.toLocaleString()}*%0A%0A`;
+    }
+    
+    if(customOrders.length>0){
+        customerMessage+=`*📝 CUSTOM REQUESTS*%0AYou have ${customOrders.length} custom item(s) pending quotation.%0A%0A`;
+    }
+    
+    customerMessage+=`*🏦 PAYMENT DETAILS*%0ABank: ${BANK_DETAILS.bankName}%0AAccount: ${BANK_DETAILS.accountNumber}%0AName: ${BANK_DETAILS.accountName}%0A%0A${catalogTotal>0?'*💰 TOTAL: ₦'+catalogTotal.toLocaleString()+'*':'*💰 TOTAL: Awaiting quote*'}%0A%0A*✅ NEXT STEPS*%0A1. Make payment%0A2. Send proof via WhatsApp%0A3. Order processed%0A%0A*${del==='delivery'?'📍 Delivery: '+address:'📍 Pickup: No.6 Afonta St, Oke-Fia, Osogbo'}*%0A%0A📞 0705 832 7844%0A%0A_Kejiayok Chemicals_`;
+    
+    // Reset and show dual send modal
+    document.getElementById('step1').className='send-step active';
+    document.getElementById('step2').className='send-step';
+    document.getElementById('btn1').disabled=false;
+    document.getElementById('confirm1').disabled=true;
+    document.getElementById('btn2').disabled=true;
+    document.getElementById('confirm2').disabled=true;
+    document.getElementById('finishBtn').disabled=true;
+    
+    closeCheckout();
+    document.getElementById('dualSendModal').classList.add('active');
+    document.body.style.overflow='hidden';
+}
+
+function sendToPrimary(){
+    // Open WhatsApp with primary number
+    window.location.href=`https://wa.me/${WHATSAPP_NUMBERS.primary}?text=${companyMessage}`;
+    
+    // Enable confirm button
+    document.getElementById('confirm1').disabled=false;
+    showToast('WhatsApp opened! Send message then return here');
+}
+
+function confirmStep1(){
+    // Mark step 1 as completed
+    document.getElementById('step1').className='send-step completed';
+    document.getElementById('btn1').disabled=true;
+    document.getElementById('btn1').innerHTML='<span>✓</span> Sent to Primary';
+    document.getElementById('confirm1').disabled=true;
+    document.getElementById('confirm1').innerHTML='✓ Completed';
+    
+    // Activate step 2
+    document.getElementById('step2').className='send-step active';
+    document.getElementById('btn2').disabled=false;
+    
+    showToast('Great! Now send to second number');
+}
+
+function sendToSecondary(){
+    // Open WhatsApp with secondary number
+    window.location.href=`https://wa.me/${WHATSAPP_NUMBERS.secondary}?text=${companyMessage}`;
+    
+    // Enable confirm button
+    document.getElementById('confirm2').disabled=false;
+    showToast('WhatsApp opened! Send message then click Complete');
+}
+
+function confirmStep2(){
+    // Mark step 2 as completed
+    document.getElementById('step2').className='send-step completed';
+    document.getElementById('btn2').disabled=true;
+    document.getElementById('btn2').innerHTML='<span>✓</span> Sent to Secondary';
+    document.getElementById('confirm2').disabled=true;
+    document.getElementById('confirm2').innerHTML='✓ Completed';
+    
+    // Enable finish button
+    document.getElementById('finishBtn').disabled=false;
+    document.getElementById('finishBtn').style.background='var(--success)';
+    
+    showToast('Perfect! Both numbers notified');
+}
+
+function finishOrder(){
+    // Send confirmation to customer
+    const phone=document.getElementById('custPhone').value.trim().replace(/^0/,'').replace(/\D/g,'');
+    window.location.href=`https://wa.me/234${phone}?text=${customerMessage}`;
+    
+    // Close dual send modal
+    document.getElementById('dualSendModal').classList.remove('active');
+    
+    // Show success modal
+    const items=Object.values(cart);
+    const catalogTotal=items.reduce((s,i)=>s+(i.price*i.qty),0);
+    showSuccessModal(currentOrderId,catalogTotal,items.length,customOrders.length);
+    
+    showToast('✅ Order sent to BOTH numbers!');
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
+function goHome(){document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('active'));document.getElementById('dualSendModal').classList.remove('active');document.getElementById('successModal').classList.remove('active');document.body.style.overflow='';document.getElementById('catalogSection').classList.add('active');document.getElementById('notepadSection').classList.remove('active');document.querySelectorAll('.mode-btn').forEach((b,i)=>b.classList.toggle('active',i===0));currentCat='all';document.querySelectorAll('.cat-pill').forEach((b,i)=>b.classList.toggle('active',i===0));document.getElementById('searchInput').value='';render();document.querySelectorAll('.nav-btn-sm').forEach((b,i)=>b.classList.toggle('active',i===0));window.scrollTo(0,0)}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAbout();closeCart();closeCheckout();closeCall();document.getElementById('dualSendModal').classList.remove('active');if(document.getElementById('successModal').classList.contains('active'))closeSuccess()}});
+render();
+</script>
+</body>
+</html>
